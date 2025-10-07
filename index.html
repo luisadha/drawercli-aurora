@@ -20,8 +20,14 @@
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-set -xv 
-
+# set -xv 
+echo -e "Processing backup..."
+backup_dir="$HOME/.shortcut/.backup-old-shortcut"
+mkdir -p "$backup_dir"
+find "$HOME/.shortcut" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
+echo "Backup done → $backup_dir"
+# wget
+echo -e "Installing yours app.."
 IFS=''
 apps=$(
   pm list packages --user 0 -3 2>&1 </dev/null | while read -r line; do
