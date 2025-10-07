@@ -20,6 +20,7 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # set -xv 
+ latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh" 
   echo -e "Info: Checking Termux widget ..\n"
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" == "com.termux.widget" ]; then
   mkdir -p "$HOME/.shortcuts/"
@@ -35,7 +36,7 @@ find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
 echo -e "✓ Backup done $backup_dir\n"
 echo -e "Info: Installing annihilation...\n"
 mkdir -p "$PREFIX/bin" 
-wget -qO "$PREFIX/bin/annihilation" "https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/8f73914591c8d43202330547ad9385d9ae7e17b8/annihilation.sh" 
+wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists" 
 chmod +x "$PREFIX/bin/annihilation" 
 echo -e "✓ Installed $PREFIX/bin/annihilation\n"
 echo -e "Info: Clean up before installs"
