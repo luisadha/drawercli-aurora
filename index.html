@@ -22,7 +22,7 @@
 # set -xv 
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" == "com.termux.widget" ]; then
   mkdir -p "$HOME/.shortcuts/"
-  echo -e "Requirement satisfied”
+  echo -e "Requirement satisfied"
 else
   echo -e "Addon Termux:Widget not installed on your phone!"
   exit 2
