@@ -20,11 +20,12 @@
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # set -xv 
+  echo -e "Info: Checking Termux widget ..\n"
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" == "com.termux.widget" ]; then
   mkdir -p "$HOME/.shortcuts/"
-  echo -e "Requirement satisfied\n"
+  echo -e "✓ Requirement satisfied\n"
 else
-  echo -e "Addon Termux:Widget not installed on your phone!"
+  echo -e "× Addon Termux:Widget not installed on your phone!"
   exit 2
 fi
 echo -e "Info: Processing backup...\n"
