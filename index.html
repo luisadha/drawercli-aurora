@@ -31,15 +31,16 @@ echo -e "Info: Processing backup...\n"
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
 find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
-echo -e "Info: Backup done $backup_dir\n"
-echo -e "Installing annihilation...\n"
+echo -e "✓ Backup done $backup_dir\n"
+echo -e "Info: Installing annihilation...\n"
 mkdir -p "$PREFIX/bin" 
 wget -qO "$PREFIX/bin/annihilation" "https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/8f73914591c8d43202330547ad9385d9ae7e17b8/annihilation.sh" 
 chmod +x "$PREFIX/bin/annihilation" 
-echo -e "Installed $PREFIX/bin/annihilation\n"
-echo -e "Clean up before installs"
+echo -e "✓ Installed $PREFIX/bin/annihilation\n"
+echo -e "Info: Clean up before installs"
 annihilation
-echo -e "Info: Now extracting yours user-installed apps.."
+echo -e "\n"
+echo -e "Info: Now extracting yours user-installed apps..\n"
 IFS=''
 apps=$(pm list packages --user 0 -3 2>&1 </dev/null | while read -r line; do
     pkg=${line#package:}
@@ -63,6 +64,6 @@ am start --user 0 -n "$pkg/$main"
 EOF
     fi
   done);
-echo -e "Info: Proccess Complated. list apps saved at $HOME/.shortcuts"
+echo -e "✓ All proccess complated, list apps saved at $HOME/.shortcuts"
 
 # --> </code></pre><h3>Bermain di Termux</h3><div class="share-line"><span>Salin kode di bawah atau</span><button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px"> Bagikan ke Termux (harus Nene-Ak47)</button>  </div> <pre>    <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code></pre>   <div class="note">       <strong>Catatan: </strong>       Agar tombol <em>Bagikan ke Termux</em>      berfungsi dengan benar, kamu harus mengganti isi file ~/bin/termux-url-opener dengan nene-ak47.sh menggunakan  </div> <code>weapon-url-opener-nightly</code> Panduan lengkap silahkan baca di tautan ini <a href="https://github.com/luisadha/nene#api">https://github.com/luisadha/nene#api</a>       <footer>          <h2>Copyright (C) 2021–2025 Made with love ♥️ <a href="https://github.com/luisadha">Luis Adha on Github</a>  </h2>      </footer>           </body>           </html>
