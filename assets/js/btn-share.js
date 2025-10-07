@@ -1,3 +1,4 @@
+
 async function share() {
   const content = document.documentElement.outerHTML;
   const blob = new Blob([content], { type: 'text/plain' });
@@ -5,20 +6,20 @@ async function share() {
 
   if (navigator.share) {
     try {
-      // 1️⃣ Coba berbagi URL dulu
+      // Coba berbagi file
       await navigator.share({
         title: document.title,
-        url: 'https://luisadha.github.io/drawercli-aurora/'
+        files: [file],
       });
     } catch (err1) {
       try {
-        // 2️⃣ Jika gagal, coba berbagi file
+        // Jika gagal (misalnya browser tidak mendukung share file), fallback ke share URL
         await navigator.share({
           title: document.title,
-          files: [file],
+          url: 'https://luisadha.github.io/drawercli-aurora/'
         });
       } catch (err2) {
-        // 3️⃣ Jika keduanya gagal
+        // Jika keduanya gagal
         alert("Fitur berbagi tidak berfungsi di browser ini.");
       }
     }
