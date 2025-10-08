@@ -2,7 +2,7 @@
 async function share() {
   const content = document.documentElement.outerHTML;
   const blob = new Blob([content], { type: 'text/plain' });
-  const file = new File([blob], 'drawercli-source.sh', { type: 'text/plain' });
+  const file = new File([blob], 'drawercli-aurora-source.txt', { type: 'text/plain' });
 
   if (navigator.share) {
     try {
@@ -20,7 +20,7 @@ async function share() {
         });
       } catch (err2) {
         // Jika keduanya gagal
-        alert();
+        alert("Fitur berbagi tidak didukung di browser ini.");
       }
     }
   } else {
