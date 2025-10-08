@@ -89,3 +89,18 @@ iframe,
   bottom: -6px;
   right: -7px;
 }
+.code-container {
+  position: relative; /* Essential for positioning the button */
+  /* Other styling for the code container */
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  /* Add other styling for appearance */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
