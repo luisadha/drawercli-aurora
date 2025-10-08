@@ -1,40 +1,22 @@
-async function include(id, path) {
+async function includeHTML(id, file, appendToHead = false) {
   const el = document.getElementById(id);
-  if (!el) return;
+  const response = await fetch(file);
+  const html = await response.text();
 
-  try {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error(`Gagal memuat ${path}`);
-
-    const text = await res.text();
-
-    // Kalau targetnya head (brain)
-    if (id === "brain") {
-      const temp = document.createElement("template");
-      temp.innerHTML = text;
-
-      // Tambahkan semua child ke head dengan cara yang benar
-      Array.from(temp.content.children).forEach(node => {
-        if (node.tagName === "LINK" || node.tagName === "META" || node.tagName === "TITLE") {
-          document.head.appendChild(node);
-        } else if (node.tagName === "SCRIPT") {
-          const s = document.createElement("script");
-          if (node.src) s.src = node.src;
-          if (node.innerText) s.innerText = node.innerText;
-          document.head.appendChild(s);
-        }
-      });
-    } else {
-      el.innerHTML = text;
-    }
-  } catch (err) {
-    console.error(err);
+  if (appendToHead) {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    // ambil semua elemen di dalam brain.html dan append satu-satu
+    Array.from(template.content.children).forEach(node => {
+      document.head.appendChild(node.cloneNode(true));
+    });
+  } else {
+    el.innerHTML = html;
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  include("brain", "section/brain.html");
-  include("header", "section/header.html");
-  include("postscript", "section/postscript.html");
-  include("footer", "section/footer.html");
-});
+// jalankan include
+includeHTML("brain", "/section/brain.html", true);
+includeHTML("header", "/section/header.html");
+includeHTML("postscript", "/section/postscript.html");
+includeHTML("footer", "/section/footer.html");
