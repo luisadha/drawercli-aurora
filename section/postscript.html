@@ -22,39 +22,40 @@
     </div>
 
 
-<!-- 
+
 <pre>
   <code class="language-shell"></code>
 </pre>
--->
-<div class="code-container">
-  <pre id="myCodeBlock" class="highlight"><code>. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code></pre>
-  <button class="copy-code-button" data-target="myCodeBlock">Copy Code</button>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const copyButtons = document.querySelectorAll('.copy-code-button');
 
-  copyButtons.forEach(button => {
-    button.addEventListener('click', async () => {
-      const targetId = button.dataset.target;
-      const codeBlock = document.getElementById(targetId);
-      if (codeBlock) {
-        const codeToCopy = codeBlock.textContent;
-        try {
-          await navigator.clipboard.writeText(codeToCopy);
-          button.textContent = 'Copied!';
-          setTimeout(() => {
-            button.textContent = 'Copy Code';
-          }, 1000); // Reset button text after 1 second
-        } catch (err) {
-          console.error('Failed to copy text: ', err);
-          alert('Failed to copy code. Please try again or copy manually.');
-        }
-      }
-    });
-  });
-});
+
+<!-- <pre><code class="code">Ini adalah snippet kode yang akan disalin</code></pre> -->
+<button onclick="copyToClipboard()">Copy</button>
+
+<script>
+function copyToClipboard() {
+    // Ambil elemen pertama dengan class 'code'
+    const codeEl = document.querySelector('.language-shell');
+    if (!codeEl) return alert('Tidak ada elemen dengan class "language-shell"');
+
+    const val = codeEl.innerText;
+
+    // Buat textarea sementara untuk menyalin
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+
+    // Salin ke clipboard
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+
+    alert('Text copied to clipboard');
+};
 </script>
     <div class="note">
       <strong>Catatan: </strong> Agar tombol <em>Bagikan ke Termux</em> berfungsi dengan benar, kamu harus mengganti isi file ~/bin/termux-url-opener dengan nene-ak47.sh menggunakan 
