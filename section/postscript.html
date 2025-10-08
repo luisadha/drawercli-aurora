@@ -20,19 +20,43 @@
 <h3>Bermain di Termux</h3>
     <div class="share-line"><span><button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px">Copy this code or Click [Share]</button> </span>
     </div>
-<pre>
-  <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code>
-</pre>
-<button class="copy-btn">Salin</button>
 
+
+<!-- 
+<pre>
+  <code class="language-shell"></code>
+</pre>
+-->
+<div class="code-container">
+  <pre id="myCodeBlock" class="highlight">
+    <code>
+      . &lt;(curl -L luisadha.github.io/drawercli-aurora)
+    </code>
+  </pre>
+  <button class="copy-code-button" data-target="myCodeBlock">Copy Code</button>
+</div>
 <script>
-document.querySelectorAll('.copy-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const code = btn.previousElementSibling.querySelector('code').innerText;
-    navigator.clipboard.writeText(code).then(() => {
-      btn.textContent = 'Disalin!';
-      setTimeout(() => btn.textContent = 'Salin', 1500);
-    }).catch(err => console.error('Gagal menyalin:', err));
+document.addEventListener('DOMContentLoaded', () => {
+  const copyButtons = document.querySelectorAll('.copy-code-button');
+
+  copyButtons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const targetId = button.dataset.target;
+      const codeBlock = document.getElementById(targetId);
+      if (codeBlock) {
+        const codeToCopy = codeBlock.textContent;
+        try {
+          await navigator.clipboard.writeText(codeToCopy);
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = 'Copy Code';
+          }, 1000); // Reset button text after 1 second
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+          alert('Failed to copy code. Please try again or copy manually.');
+        }
+      }
+    });
   });
 });
 </script>
