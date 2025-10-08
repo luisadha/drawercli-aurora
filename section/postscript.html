@@ -1,35 +1,16 @@
-<!-- <h3>Bermain di Termux</h3>
-
-<div class="share-line">
-  <span>Salin kode di bawah atau</span>
-  <button onclick="share()">
-    <img src="./assets/img/share-icon.png" alt="Share Icon" width="11" height="11">
-    Bagikan ke Termux (harus Nene-Ak47)
-  </button>
-</div>
-
-<pre><code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code></pre>
-
-<div class="note">
-  <strong>Catatan:</strong> Agar tombol <em>Bagikan ke Termux</em> berfungsi dengan benar, kamu harus mengganti isi file <code>~/bin/termux-url-opener</code> dengan <code>nene-ak47.sh</code> menggunakan
-  <code>weapon-url-opener-nightly</code>.
-  Panduan lengkap silakan baca di tautan ini:
-  <a href="https://github.com/luisadha/nene#api" target="_blank">https://github.com/luisadha/nene#api</a>
-</div>
--->
 <h3>Bermain di Termux</h3>
-    <div class="share-line"><span><button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px"> Share Source-code</button> </span>
-    </div>
-
-
+<div class="share-line"><span><button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px"> Share Source-code</button> </span>
+</div>
+<div class="share-line"><span><button onclick="copyToClipboard()">Copy</button>
+</span></div>
 
 <pre>
-  <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code>
+  <code class="language-shell">. <(curl -L luisadha.github.io/drawercli-aurora)</code>
 </pre>
 
 
 <!-- <pre><code class="code">Ini adalah snippet kode yang akan disalin</code></pre> -->
-<button onclick="copyToClipboard()">Copy</button>
+
 
 <script>
 function copyToClipboard() {
