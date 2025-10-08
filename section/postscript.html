@@ -18,12 +18,24 @@
 </div>
 -->
 <h3>Bermain di Termux</h3>
-    <div class="share-line">
-      <span>Salin kode di bawah atau <button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px"> [Share this URL and then choose Termux]</button> </span>
+    <div class="share-line"><span>Copy this code or Click button <button onclick="share()"><img src="./assets/img/share-icon.png" alt="Share Icon" width="11px" height="11px"> [Share]</button> </span>
     </div>
-<pre> 
-      <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code>
+<pre>
+  <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code>
 </pre>
+<button class="copy-btn">Salin</button>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.previousElementSibling.querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'Disalin!';
+      setTimeout(() => btn.textContent = 'Salin', 1500);
+    }).catch(err => console.error('Gagal menyalin:', err));
+  });
+});
+</script>
     <div class="note">
       <strong>Catatan: </strong> Agar tombol <em>Bagikan ke Termux</em> berfungsi dengan benar, kamu harus mengganti isi file ~/bin/termux-url-opener dengan nene-ak47.sh menggunakan 
     </div> 
