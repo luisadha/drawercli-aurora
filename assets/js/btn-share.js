@@ -2,7 +2,7 @@
 async function share() {
   const content = document.documentElement.outerHTML;
   const blob = new Blob([content], { type: 'text/plain' });
-  const file = new File([blob], 'drawercli-source.txt', { type: 'text/plain' });
+  const file = new File([blob], 'drawercli-source.sh', { type: 'text/plain' });
 
   if (navigator.share) {
     try {
@@ -20,7 +20,7 @@ async function share() {
         });
       } catch (err2) {
         // Jika keduanya gagal
-        alert("Fitur berbagi tidak berfungsi di browser ini.");
+        alert();
       }
     }
   } else {
