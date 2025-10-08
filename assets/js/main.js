@@ -1,22 +1,33 @@
 async function includeHTML(id, file, appendToHead = false) {
-  const el = document.getElementById(id);
-  const response = await fetch(file);
-  const html = await response.text();
+  try {
+    // deteksi base path GitHub Pages (contoh: /drawercli-aurora/)
+    const base = `/${location.pathname.split('/')[1]}`;
 
-  if (appendToHead) {
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-    // ambil semua elemen di dalam brain.html dan append satu-satu
-    Array.from(template.content.children).forEach(node => {
-      document.head.appendChild(node.cloneNode(true));
-    });
-  } else {
-    el.innerHTML = html;
+    // gabungkan path dengan file target
+    const el = document.getElementById(id);
+    const response = await fetch(`${base}/section/${file}`);
+    if (!response.ok) throw new Error(`Gagal memuat ${file}: ${response.status}`);
+    
+    const html = await response.text();
+
+    if (appendToHead) {
+      const template = document.createElement('template');
+      template.innerHTML = html.trim();
+
+      // masukkan elemen dari brain.html ke <head>
+      Array.from(template.content.children).forEach(node => {
+        document.head.appendChild(node.cloneNode(true));
+      });
+    } else if (el) {
+      el.innerHTML = html;
+    }
+  } catch (err) {
+    console.error(err);
   }
 }
 
-// jalankan include
-includeHTML("brain", "/section/brain.html", true);
-includeHTML("header", "/section/header.html");
-includeHTML("postscript", "/section/postscript.html");
-includeHTML("footer", "/section/footer.html");
+// jalankan include (otomatis prefix path repo)
+includeHTML("brain", "brain.html", true);
+includeHTML("header", "header.html");
+includeHTML("postscript", "postscript.html");
+includeHTML("footer", "footer.html");
