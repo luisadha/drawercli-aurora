@@ -30,8 +30,10 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* jangan wrap ke baris baru */
+  overflow-x: auto;  /* jika kebanyakan elemen, bisa di-scroll horizontal */
   margin-top: 0.5em;
+  -webkit-overflow-scrolling: touch; /* smooth scroll di iOS */
 }
 
 button {
