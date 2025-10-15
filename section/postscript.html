@@ -1,8 +1,6 @@
-<h3>Playing on Termux</h3>
-<pre>  <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code></pre>
+<h3>Playing on Termux</h3> <pre>  <code class="language-shell">. &lt;(curl -L luisadha.github.io/drawercli-aurora)</code></pre>
 <button onclick="copyToClipboard()">Copy</button>
-<script>
-function copyToClipboard() {
+<script>function copyToClipboard() {
     // Ambil elemen pertama dengan class 'code'
     const codeEl = document.querySelector('language-shell');
     if (!codeEl) return alert('Tidak ada elemen dengan class "language-shell"');
@@ -25,9 +23,4 @@ function copyToClipboard() {
     document.body.removeChild(selBox);
 
     alert('Text copied to clipboard');
-};
-</script>
-    <div class="note">
-      <strong>Catatan: </strong> Agar tombol <em>Bagikan ke Termux</em> berfungsi dengan benar, kamu harus mengganti isi file ~/bin/termux-url-opener dengan nene-ak47.sh menggunakan 
-    </div> 
-<code>weapon-url-opener-nightly</code> <p>Panduan lengkap silahkan baca di tautan ini <a href="https://github.com/luisadha/nene#api">https://github.com/luisadha/nene#api</a></p>
+};</script>    <div class="note">      <strong>Catatan: </strong> Agar tombol <em>Bagikan ke Termux</em> berfungsi dengan benar, kamu harus mengganti isi file ~/bin/termux-url-opener dengan nene-ak47.sh menggunakan     </div> <code>weapon-url-opener-nightly</code> <p>Panduan lengkap silahkan baca di tautan ini <a href="https://github.com/luisadha/nene#api">https://github.com/luisadha/nene#api</a></p>
