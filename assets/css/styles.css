@@ -36,20 +36,7 @@ footer {
   -webkit-overflow-scrolling: touch; /* smooth scroll di iOS */
 }
 
-button {
-  font-family: inherit;
-  font-size: 0.9em;
-  padding: 0.4em 0.8em;
-  border: none;
-  background: #0b0c0e;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
-button:hover {
-  background: #333;
-}
 
 #player {
   max-width: 100%;
