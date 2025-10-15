@@ -1,0 +1,56 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100%;
+  margin: 2em;
+}
+
+h2 {
+  margin-top: 2em;
+}
+
+label {
+  user-select: none;
+}
+
+button, input, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.2em 0.5em;
+}
+
+textarea {
+  width: 100%;
+}
+
+.outline {
+  position: relative;
+  padding: 0.5em 1em;
+  border: 1px solid #ccc;
+}
+
+.outline button {
+  position: absolute;
+  right: 2em;
+  top: 2em;
+}
+
+pre {
+  padding: 0.5em;
+  background-color: #ddd;
+  border-radius: 3px;
+}
+
+code, kbd {
+  font-family: Consolas, 'Courier New', Courier, monospace;
+  font-size: 1em;
+  user-select: all;
+}
+
+img, .block {
+  display: block;
+  margin: 0.3em;
+}
