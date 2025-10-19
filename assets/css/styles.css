@@ -129,7 +129,7 @@ pre {
 
 .copy-button {
   position: absolute;
-  display: none;
+  display: inline-block;
   cursor: pointer;
   inset: 5px 5px auto auto;
   width: 1em;
