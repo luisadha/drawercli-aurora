@@ -123,3 +123,13 @@ iframe,
   padding: 5px 10px;
   cursor: pointer;
 }
+pre {
+  position: relative;
+}
+.copy-button {
+  position: absolute;
+  inset: 5px 5px auto auto;
+  width: 1em; height: 1em;
+  border: 1px solid;
+  box-shadow: -3px 3px #999;
+}
