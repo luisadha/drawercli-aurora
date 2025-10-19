@@ -4,8 +4,8 @@
   "display": "fullscreen",
   "icons": [
     {
-      "src": "icons/Chrisbanks2-GCons-App-drawer.png",
-      "sizes": "128x128",
+      "src": "icons/drawercli-192.png",
+      "sizes": "192x192",
       "type": "image/png"
     }
   ],
