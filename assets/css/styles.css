@@ -132,4 +132,5 @@ pre {
   width: 1em; height: 1em;
   border: 1px solid;
   box-shadow: -3px 3px #999;
+  display: inline-block;
 }
