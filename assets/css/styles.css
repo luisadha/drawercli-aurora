@@ -4,6 +4,13 @@ body {
   padding: 1em;
 }
 
+.add-button {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: none;
+}
+
 h2, h3 {
   margin-top: 1.5em;
 }
