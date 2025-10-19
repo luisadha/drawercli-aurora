@@ -1,1 +1,1 @@
-function share() {      if (navigator.share) {      navigator.share({          title: document.title,          url: 'https://luisadha.github.io/drawercli-aurora/'         });      } else {        alert("Fitur berbagi tidak didukung di browser ini.");      }    }  
+function shareUrl() {      if (navigator.shareUrl) {      navigator.shareUrl({          title: document.title,          url: 'https://luisadha.github.io/drawercli-aurora/'         });      } else {        alert("Fitur berbagi tidak didukung di browser ini.");      }    }  
