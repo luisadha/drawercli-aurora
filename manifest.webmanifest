@@ -4,8 +4,8 @@
   "display": "fullscreen",
   "icons": [
     {
-      "src": "icons/fox-icon.png",
-      "sizes": "192x192",
+      "src": "icons/Chrisbanks2-GCons-App-drawer.128.png",
+      "sizes": "128x128",
       "type": "image/png"
     }
   ],
