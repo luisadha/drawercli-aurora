@@ -1,1 +1,1 @@
-function share() {      if (navigator.share) {      navigator.share({          title: document.title,          url: 'https://luisadha.github.io/weapon-url-opener-nightly/'         });      } else {        alert("Fitur berbagi tidak didukung di browser ini.");      }    }  
+function share() {      if (navigator.share) {      navigator.share({          title: document.title,          url: 'https://luisadha.github.io/drawercli-aurora/'         });      } else {        alert("Fitur berbagi tidak didukung di browser ini.");      }    }  
