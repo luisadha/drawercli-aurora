@@ -1,8 +1,6 @@
-
-  document.addEventListener("DOMContentLoaded", () => {
-    CopyButton.init({
-      selector: 'pre code', // Elemen mana yang dikasih tombol copy
-      tooltipText: 'Copied!', // (opsional)
-      buttonText: 'Copy'      // (opsional)
-    });
-  });
+document.querySelectorAll('pre > code').forEach(el => {
+  const btn = document.createElement('span');
+  btn.className = 'copy-button';
+  btn.onclick = () => navigator.clipboard.writeText(el.innerText);
+  el.parentNode.append(btn);
+});
