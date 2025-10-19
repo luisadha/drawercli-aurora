@@ -3,7 +3,7 @@ self.addEventListener('install', (e) => {
     caches.open('drawercli-apps').then((cache) => cache.addAll([
       '/drawercli-aurora/index.html',
       '/drawercli-aurora/index.js',
-      '/drawercli-aurora/assets/style.css',
+      '/drawercli-aurora/assets/css/style.css',
     ])),
   );
 });
