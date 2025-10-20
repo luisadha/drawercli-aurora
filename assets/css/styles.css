@@ -75,8 +75,8 @@ iframe,
   align-items: center;
   gap: 5px;
   padding: 6px 12px;
-  background: #222;
-  color: #eee;
+  background: #4caf50;
+  color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -85,8 +85,33 @@ iframe,
 }
 
 .share-container button:hover {
-  background: #333;
+  background: #43a047;
+  transform: scale(1.05)
 }
+
+.share-container button img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1) brightness(1.2);
+  transition: filter 0.2s;
+}
+
+/* kalau latar tombolnya terang, balik ke ikon hitam */
+@media (prefers-color-scheme: light) {
+  .share-container button {
+    background: #f0f0f0;
+    color: #111;
+  }
+
+  .share-container button:hover {
+    background: #ddd;
+  }
+
+  .share-container button img {
+    filter: none;
+  }
+}
+
 /* Tambahan gaya share */
 .share {
   font-weight: bold;
