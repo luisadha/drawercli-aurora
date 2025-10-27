@@ -173,6 +173,11 @@ pre {
 .copy-fail {
   border-style: dotted;
 }
+.copy-box {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
 /* ✳️ Styling input agar tampil seperti blok kode */
 #installCmd {
   width: 100%;
@@ -182,14 +187,21 @@ pre {
   background: #0b0c0e;
   border: none;
   border-left: 4px solid #04AA6D; /* hijau khas W3Schools */
-  padding: 10px 12px;
+  /* padding: 10px 12px; */
+  padding: 10px 75px 10px 12px; /* kanan lebih lebar */
   border-radius: 6px;
   outline: none;
   cursor: default;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 /* ✳️ Styling tombol copy */
 #myFixCopy {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
   margin-top: 6px;
   background: #04AA6D;
   color: #fff;
@@ -200,6 +212,20 @@ pre {
   cursor: pointer;
 }
 
-#myFixCopy:hover {
-  background: #03945f;
+
+/* 🌙 Mode Gelap */
+@media (prefers-color-scheme: dark) {
+  #installCmd {
+    background: #161b22;
+    color: #e6edf3;
+    border-left: 4px solid #2ea043;
+  }
+
+  #myFixCopy {
+    background: #2ea043;
+  }
+
+  #myFixCopy:hover {
+    background: #238636;
+  }
 }
