@@ -187,8 +187,8 @@ pre {
   background: #0b0c0e;
   border: none;
   border-left: 4px solid #04AA6D; /* hijau khas W3Schools */
-  /* padding: 10px 12px; */
-  padding: 10px 75px 10px 12px; /* kanan lebih lebar */
+  padding: 10px 12px; 
+ /* padding: 10px 75px 10px 12px; /* kanan lebih lebar */
   border-radius: 6px;
   outline: none;
   cursor: default;
