@@ -192,8 +192,6 @@ pre {
   border-radius: 6px;
   outline: none;
   cursor: default;
-  overflow-x: auto;
-  white-space: nowrap;
 }
 
 /* ✳️ Styling tombol copy */
