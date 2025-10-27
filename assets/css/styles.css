@@ -178,6 +178,16 @@ pre {
   align-items: center;
   gap: 6px;
 }
+
+
+.copy-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 420px;
+  font-family: ui-monospace, Consolas, "Roboto Mono", monospace;
+}
+
 /* ✳️ Styling input agar tampil seperti blok kode */
 #installCmd {
   width: 100%;
@@ -190,6 +200,7 @@ pre {
   padding: 10px 12px; 
  /* padding: 10px 75px 10px 12px; /* kanan lebih lebar */
   border-radius: 6px;
+  box-sizing: border-box;
   outline: none;
   cursor: default;
 }
