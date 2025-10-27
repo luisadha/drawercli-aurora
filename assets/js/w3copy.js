@@ -1,6 +1,6 @@
 function myFixCopy() {
   // Get the text field
-  var copyText = document.getElementById("myCopy");
+  var copyText = document.getElementById("installCmd");
 
   // Select the text field
   copyText.select();
