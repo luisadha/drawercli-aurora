@@ -17,6 +17,7 @@ label {
 }
 
 button, input, textarea {
+  display: inline-block;
   font-family: inherit;
   font-size: inherit;
   padding: 0.2em 0.5em;
