@@ -266,10 +266,26 @@ pre {
   font-family: monospace;
   background: #fff;
 }
+
 .table-container table {
-  border-collapse: collapse;
-  border: none;
+  border-collapse: separate; /* penting biar border-radius berfungsi */
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden; /* biar radius nggak bocor */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
+
+.table-container td {
+  border: none;
+  padding: 0.5em;
+}
+
+.table-container td:first-child {
+  border-right: 1px solid #ddd; /* garis pemisah antara input dan tombol */
+}
+
+
 
 /* 🌙 Mode Gelap */
 @media (prefers-color-scheme: dark) {
