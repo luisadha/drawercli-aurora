@@ -178,8 +178,8 @@ pre {
   width: 100%;
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Roboto Mono", monospace;
   font-size: 13px;
-  color: #222;
-  background: #f6f8fa;
+  color: #f0f0f0;
+  background: #0b0c0e;
   border: none;
   border-left: 4px solid #04AA6D; /* hijau khas W3Schools */
   padding: 10px 12px;
