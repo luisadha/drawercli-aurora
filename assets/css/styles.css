@@ -174,9 +174,9 @@ pre {
   border-style: dotted;
 }
 .copy-box {
-  position: relative;
-  display: inline-block;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 /* ✳️ Styling input agar tampil seperti blok kode */
 #installCmd {
