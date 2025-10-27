@@ -260,11 +260,15 @@ pre {
 /* Sel dan isi tabel biar tetap bersih tapi rapi */
 .table-container td,
 .table-container th {
-  padding: 8px 12px;
+  padding: 8px 12px; /* 0 */
   text-align: left;
-  border: 1px solid #ddd;
+  border: none;
   font-family: monospace;
   background: #fff;
+}
+.table-container table {
+  border-collapse: collapse;
+  border: none;
 }
 
 /* 🌙 Mode Gelap */
