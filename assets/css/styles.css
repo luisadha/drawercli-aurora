@@ -238,3 +238,41 @@ pre {
     background: #238636;
   }
 }
+
+/* 📦 Tata letak mirip share-container tapi untuk table */
+.table-container {
+  display: flex;
+  flex-wrap: wrap;         /* elemen bisa turun ke baris baru */
+  gap: 10px;               /* jarak antar elemen */
+  align-items: flex-start; /* biar sejajar rapi di atas */
+  justify-content: flex-start; /* biar semua elemen mulai dari kiri */
+  overflow-x: auto;        /* jika kepanjangan, bisa digeser horizontal */
+  -webkit-overflow-scrolling: touch; /* smooth scroll di mobile */
+  margin-top: 1em;
+}
+
+/* Jika kamu pakai <table> langsung di dalamnya */
+.table-container table {
+  border-collapse: collapse;
+  min-width: 250px;
+}
+
+/* Sel dan isi tabel biar tetap bersih tapi rapi */
+.table-container td,
+.table-container th {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  background: #fff;
+}
+
+/* 🌙 Mode Gelap */
+@media (prefers-color-scheme: dark) {
+  .table-container td,
+  .table-container th {
+    border-color: #30363d;
+    background: #161b22;
+    color: #e6edf3;
+  }
+}
