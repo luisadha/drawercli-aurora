@@ -3,6 +3,7 @@ const FILES_TO_CACHE = [
   "/drawercli-aurora/",
   "/drawercli-aurora/index.html",
   "/drawercli-aurora/index.js",
+  "/drawercli-aurora/assets/js/btn-share.js",
   "/drawercli-aurora/assets/css/style.css",
 ];
 
