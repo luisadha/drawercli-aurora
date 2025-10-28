@@ -1,9 +1,5 @@
 #<!DOCTYPE html><html lang="en"><head id="brain"><style type="text/css"> .single blockquote {  background: lightyellow;  padding: 1px 2em; }</style><link rel="stylesheet" href="assets/css/styles.css"><link rel="import" href="section/brain.html" /><script src="assets/js/btn-share.js"></script><script src="assets/js/btn-share-url.js"></script><script src="assets/js/w3copy.js"></script><script src="assets/js/copy-button.js" data-selector="pre > code, blockquote" defer></script></head><body><b>Table of Contents</b><div class="marquee"><div class="marquee-content"><a href="#description">Descriptions</a><a href="#requirement">Requirements</a><a href="#prerequisite">Prerequisites</a><a href="#installation">Installations</a><a href="#copyright">Copyright</a></div></div><header id="header"></header><main><section>  <!-- <pre><code class="language-shell">
-#!/data/data/com.termux/files/usr/bin/env bash
-# MIT License
-#
-# Copyright (c) 2025 Luis Adha
-
+#!/data/data/com.termux/files/usr/bin/env sh
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -19,53 +15,68 @@
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-# set -xv
- latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
-  echo -e "Info: Checking Termux widget ..\n"
-if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" == "com.termux.widget" ]; then
-  mkdir -p "$HOME/.shortcuts/"
-  echo -e "✓ Requirement satisfied\n"
+# 
+# MIT License
+# (c) 2025 Luis Adha
+
+latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
+
+printf 'Info: Checking Termux widget ..\n\n'
+
+if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" = "com.termux.widget" ]; then
+    mkdir -p "$HOME/.shortcuts/"
+    printf '✓ Requirement satisfied\n\n'
 else
-  echo -e "× Addon Termux:Widget not installed on your phone!"
-  exit 2
+    printf '× Addon Termux:Widget not installed on your phone!\n'
+    exit 2
 fi
-echo -e "Info: Processing backup...\n"
+
+printf 'Info: Processing backup...\n'
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
 find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
-echo -e "✓ Backup done $backup_dir\n"
-echo -e "Info: Installing annihilation...\n"
+printf '✓ Backup done %s\n\n' "$backup_dir"
+
+printf 'Info: Installing annihilation...\n'
 mkdir -p "$PREFIX/bin"
-wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
+
+# wget tetap prioritas, tanpa ubah redirection
+if command -v wget >/dev/null 2>&1; then
+    wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
+elif command -v curl >/dev/null 2>&1; then
+    curl -fsSL -o "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
+else
+    printf 'Error: neither wget nor curl found!\n' >&2
+    exit 1
+fi
+
 chmod +x "$PREFIX/bin/annihilation"
-echo -e "✓ Installed $PREFIX/bin/annihilation\n"
-echo -e "Info: Clean up before installs"
-annihilation
-echo -e "\n"
-echo -e "Info: Now extracting yours user-installed apps..\n"
-IFS=''
-apps=$(pm list packages --user 0 -3 2>&1 </dev/null | while read -r line; do
+printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
+
+printf 'Info: Clean up before installs\n'
+"$PREFIX/bin/annihilation"
+printf '\n\n'
+
+printf 'Info: Now extracting your user-installed apps..\n'
+
+pm list packages --user 0 -3 2>&1 </dev/null | while IFS= read -r line; do
     pkg=${line#package:}
-    # ambil main activity
+
     main=$(pm resolve-activity --user 0 \
         -a android.intent.action.MAIN \
         -c android.intent.category.LAUNCHER \
         "$pkg" 2>&1 </dev/null | grep "name=" | head -n1 | sed 's/.*name=//')
 
-    # ambil apk path
-    apk_path=$(pm path "$pkg" --user 0 2>&1 </dev/null | sed 's/package://; s/=$pkg//' | head -n1)
+    apk_path=$(pm path "$pkg" --user 0 2>&1 </dev/null | sed 's/package://; q' )
 
-    # ambil label aplikasi
-    label=$(aapt dump badging "$apk_path" 2>/dev/null \
-              | grep "application-label:" \
-              | sed "s/.*application-label:'//; s/'//")
+    label=$(aapt dump badging "$apk_path" 2>/dev/null |
+        grep "application-label:" |
+        sed "s/.*application-label:'//; s/'//")
 
     if [ -n "$main" ] && [ -n "$label" ]; then
-cat <<EOF > ~/.shortcuts/"$label"
-am start --user 0 -n "$pkg/$main"
-EOF
+        printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$main" > "$HOME/.shortcuts/$label"
     fi
-  done);
-echo -e "✓ All proccess complated, list apps saved at $HOME/.shortcuts"
+done
 
+printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> # Content-Type: text/html <hr></body></html>
