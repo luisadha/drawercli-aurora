@@ -364,7 +364,7 @@ details {
 summary {
   cursor: pointer;
   font-weight: 600;
-  color: #0e0e0e;
+  color: initial;
   list-style: none;
 }
 
@@ -386,5 +386,5 @@ details[open] summary::before {
 details > *:not(summary) {
   margin-left: 20px;
   margin-top: 6px;
-  color: #0e0e0e;
+  color: initial;
 }
