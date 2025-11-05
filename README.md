@@ -10,10 +10,9 @@
 - [Termuxlauncher](https://github.com/amsitlab/termuxlauncher)
 - [Drawercli (Successor)](https://github.com/luisadha/drawercli)
 ## Credits
-- @fmway (Core Contributor)
+- [@fmway](https://github.com/fmway) (Core Contributor)
 - Chrisbanks2 (Icon/favicon)
-- https://github.com/mdn/pwa-examples (PWA Tutorials)
-
+- [(PWA Tutorials)](https://github.com/mdn/pwa-examples)
 ## 📝 License
 Copyright © 2025 
 This project is MIT licensed.
