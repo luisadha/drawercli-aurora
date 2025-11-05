@@ -8,7 +8,7 @@
 ## 💭 Inspired By
 - [TUI Launcher](https://f-droid.org/id/packages/ohi.andre.consolelauncher/)
 - [Termuxlauncher](https://github.com/amsitlab/termuxlauncher)
-
+- [Drawercli (Successor)](https://github.com/luisadha/drawercli)
 ## Credits
 - @fmway (Core Contributor)
 - Chrisbanks2 (Icon/favicon)
