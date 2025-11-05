@@ -24,7 +24,7 @@ ask_to_install_nene() {
 
     # Jika file sudah ada, jangan tanyakan lagi
     if [ -f "$target" ]; then
-        printf 'nene is already installed at $target.\n'
+        printf 'nene is already installed at \%s\n' '$target'
         return 0
     fi
 
@@ -37,7 +37,7 @@ ask_to_install_nene() {
             mkdir -p "$HOME/bin" &&
             curl -fsSL -o "$target" "$source_url" &&
             chmod +x "$target" &&
-            printf 'Installation completed:/%s' "$target"
+            printf '✓ Installation completed:/%s' "$target"
             printf '\n'
             ;;
         *)
@@ -82,7 +82,7 @@ fi
 chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
 ask_to_install_nene
-printf 'Info: Clean up before installs\n'
+printf '\nInfo: Clean up before installs\n'
 "$PREFIX/bin/annihilation"
 printf '\n\n'
 
