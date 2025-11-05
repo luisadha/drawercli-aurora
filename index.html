@@ -28,19 +28,21 @@ ask_to_install_nene() {
         return 0
     fi
 
-    printf "Would you like to install nene so you can update the app list later using the sharing feature? [y/N]: "
+    printf "Install nene to enable future app list updates via sharing feature? [y/N]: "
     read prompt
 
     case "$prompt" in
         y|Y)
-            echo "Installing nene..."
+            printf 'Installing nene...'
             mkdir -p "$HOME/bin" &&
             curl -fsSL -o "$target" "$source_url" &&
             chmod +x "$target" &&
-            echo "Installation completed: $target"
+            printf 'Installation completed:/%s' "$target"
+            printf '\n'
             ;;
         *)
-            echo "Installation skipped."
+            printf 'Installation skipped.\n'
+            
             ;;
     esac
 }
