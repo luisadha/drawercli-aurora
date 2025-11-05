@@ -323,3 +323,21 @@ pre {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
+.toggle-btn {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      user-select: none;
+}
+.toggle-btn button {
+      border: none;
+      background: none;
+      font-size: 1em;
+}
+.collapse {
+      overflow: hidden;
+      height: 0;
+      transition: height .25s ease;
+}
