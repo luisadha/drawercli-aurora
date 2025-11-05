@@ -38,7 +38,9 @@ ask_to_install_nene() {
             curl -fsSL -o "$target" "$source_url" &&
             chmod +x "$target" &&
             printf '✓ Installation completed: %s\n' "$target"
-            
+            printf '\nEnabling termux-url-opener function..'
+            cp -f "$target" "$HOME/bin/termux-url-opener"
+            printf '..done\n'        
             ;;
         *)
             printf 'Installation skipped.\n'
