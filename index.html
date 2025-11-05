@@ -18,6 +18,33 @@
 # 
 # MIT License
 # (c) 2025 Luis Adha
+ask_to_install_nene() {
+    target="$HOME/bin/nene-m429.sh"
+    source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
+
+    # Jika file sudah ada, jangan tanyakan lagi
+    if [ -f "$target" ]; then
+        echo "nene is already installed at $target."
+        return 0
+    fi
+
+    printf "Would you like to install nene so you can update the app list later using the sharing feature? [y/N]: "
+    read prompt
+
+    case "$prompt" in
+        y|Y)
+            echo "Installing nene..."
+            mkdir -p "$HOME/bin" &&
+            curl -fsSL -o "$target" "$source_url" &&
+            chmod +x "$target" &&
+            echo "Installation completed: $target"
+            ;;
+        *)
+            echo "Installation skipped."
+            ;;
+    esac
+}
+
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
 
@@ -52,7 +79,7 @@ fi
 
 chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
-
+ask_to_install_nene
 printf 'Info: Clean up before installs\n'
 "$PREFIX/bin/annihilation"
 printf '\n\n'
