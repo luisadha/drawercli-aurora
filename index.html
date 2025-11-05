@@ -35,17 +35,15 @@ ask_to_install_nene() {
         y|Y)
             printf 'Installing nene...\n'
             mkdir -p "$HOME/bin" &&
-            curl -fsSL -o "$target" "$source_url" &&
-            chmod +x "$target" &&
-            sleep 2
-            printf '\n✓ Installation completed: %s\n' "$target"
+            curl -fsSL -o "$target" "$source_url" && printf '\n✓ Installation completed: %s\n' "$target" || printf 'Error while fetch data..'
+            chmod +x "$target" 
             printf '\nEnabling termux-url-opener function..'
             cp -f "$target" "$HOME/bin/termux-url-opener"
             sleep 1       
             ;;
         *)
-            printf 'Installation skipped.\n'
-            
+            printf '\nInstallation skipped for a reason.\n'
+            printf '\n'
             ;;
     esac
 }
