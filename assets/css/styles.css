@@ -355,4 +355,36 @@ pre {
   margin: 4px 0 10px 0;
   font-size: 0.9em;
   color: #8b949e; 
-} 
+}
+
+details {
+  margin: 6px 0;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #c9d1d9;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.2s ease;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details > *:not(summary) {
+  margin-left: 20px;
+  margin-top: 6px;
+  color: #8b949e;
+}
