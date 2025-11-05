@@ -24,7 +24,7 @@ ask_to_install_nene() {
 
     # Jika file sudah ada, jangan tanyakan lagi
     if [ -f "$target" ]; then
-        printf 'nene is already installed at \%s\n' '$target'
+        printf 'nene is already installed at %s\n' "$target"
         return 0
     fi
 
@@ -37,8 +37,8 @@ ask_to_install_nene() {
             mkdir -p "$HOME/bin" &&
             curl -fsSL -o "$target" "$source_url" &&
             chmod +x "$target" &&
-            printf '✓ Installation completed:/%s' "$target"
-            printf '\n'
+            printf '✓ Installation completed: %s\n' "$target"
+            
             ;;
         *)
             printf 'Installation skipped.\n'
