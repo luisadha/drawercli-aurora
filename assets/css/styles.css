@@ -341,3 +341,18 @@ pre {
       height: 0;
       transition: height .25s ease;
 }
+
+.info-icon {
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #58a6ff;
+  margin-left: 6px;
+}
+.info-icon:hover {
+  color: #79c0ff;
+}
+.info-text {
+  margin: 4px 0 10px 0;
+  font-size: 0.9em;
+  color: #8b949e; 
+} 
