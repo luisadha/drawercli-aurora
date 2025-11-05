@@ -388,3 +388,9 @@ details > *:not(summary) {
   margin-top: 6px;
   color: initial;
 }
+summary h4 {
+  display: inline;
+  margin: 0;
+  font-weight: 600;
+  font-size: 1em;
+}
