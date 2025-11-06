@@ -3,7 +3,22 @@ body {
   background: #f5f5f5;
   padding: 1em;
 }
+p {
+  margin: 0.5rem 0 1rem 0; /* top 0.5rem, bottom 1rem */
+}
 
+ul {
+  margin: 0.5rem 0 1rem 2rem; /* top 0.5rem, bottom 1rem, left 2rem */
+}
+
+li p {
+  margin: 0.25rem 0; /* paragraf di dalam list */
+}
+
+h3 {
+  margin-top: 2rem; /* jarak di atas heading */
+  margin-bottom: 1rem; /* jarak di bawah heading */
+}
 .add-button {
   position: absolute;
   top: 1px;
