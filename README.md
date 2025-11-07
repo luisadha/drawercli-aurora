@@ -5,7 +5,10 @@
 
 — Use this self-hosted tool to extract the list of user applications into shortcut script format so they can be executed via the Termux Widget.
 
-<img src="assets/img/other-permissions-en.png alt="app permissions">
+
+<p align="left">
+  <img src="assets/img/other-permissions-en.png" alt="app permissions" width="280" style="border-radius:10px;">
+</p>
 
 ## 💭 Inspired By
 - [TUI Launcher](https://f-droid.org/id/packages/ohi.andre.consolelauncher/)
