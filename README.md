@@ -1,5 +1,5 @@
 # drawercli-aurora
-[![CI](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml/badge.svg?branch=main)](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml)
+[![Build .deb package](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml/badge.svg?branch=main)](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml)
 [![deb version](https://img.shields.io/github/v/release/luisadha/drawercli-aurora?label=deb%20version&sort=semver)](https://github.com/luisadha/drawercli-aurora/releases/latest)
 ## Description
 — Drawercli (Aurora version) is an installer script that allows all user applications to be launched through the Termux Widget.
