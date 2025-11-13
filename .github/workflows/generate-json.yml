@@ -1,0 +1,50 @@
+name: Generate JSON
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version
+        id: ver
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          elif [[ -f version.txt ]]; then
+            echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
+          else
+            echo "version=dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get description
+        id: desc
+        run: |
+          desc=$(curl -s https://api.github.com/repos/${{ github.repository }} | jq -r .description)
+          [[ "$desc" == "null" || -z "$desc" ]] && desc="Static site and Bash tools you can run from your terminal"
+          echo "desc=$desc" >> $GITHUB_OUTPUT
+
+      - name: Create JSON
+        run: |
+          name="${GITHUB_REPOSITORY#*/}"
+          cat > ${name}.json <<EOF
+          {
+            "name": "$name",
+            "version": "${{ steps.ver.outputs.version }}",
+            "description": "${{ steps.desc.outputs.desc }}",
+            "global": "true",
+            "scripts": ["index.html"],
+            "files": ["man/$name.1"],
+            "install": "make install"
+          }
+          EOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: metadata
+          path: ./*.json
