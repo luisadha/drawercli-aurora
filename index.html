@@ -18,7 +18,7 @@
 # 
 # MIT License
 # (c) 2025 Luis Adha
-pkg install wget && pkg install aapt
+
 ask_to_install_nene() {
     target="$HOME/bin/nene-m249.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
@@ -70,7 +70,9 @@ printf '✓ Backup done %s\n\n' "$backup_dir"
 
 printf 'Info: Installing dependencies..\n'
 mkdir -p "$PREFIX/bin"
-
+printf '\n'
+pkg install wget && pkg install aapt
+printf '\n'
 # wget tetap prioritas, tanpa ubah redirection
 if command -v wget >/dev/null 2>&1; then
     wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
@@ -104,13 +106,11 @@ pm list packages --user 0 -3 2>&1 </dev/null | while IFS= read -r line; do
         grep "application-label:" |
         sed "s/.*application-label:'//; s/'//")
 
-  if [ -n "$main" ] && [ "$label" = "com.termux" ]; then
-    {
-        printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$main"
-        echo 'read wait'
-    } > "$HOME/.shortcuts/$label"
+  if [ -n "$main" ] && [ -n "$label" ]; then
+        printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$main" > "$HOME/.shortcuts/$label"
   fi
 done
-
+rm "$HOME"/.shortcuts/Termux
+        printf 'am start --user 0 -n "com.termux/com.termux.app.TermuxActivity\nread wait" > ${HOME}/.shortcuts/Termux
 printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
