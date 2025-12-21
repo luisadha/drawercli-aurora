@@ -30,7 +30,7 @@ ask_to_install_nene() {
     fi
 
     printf "Install nene to enable future app list updates via sharing feature? [y/N]: \n"
-    read prompt
+    read prompt < /dev/tty
 
     case "$prompt" in
         y|Y)
@@ -71,7 +71,7 @@ printf '✓ Backup done %s\n\n' "$backup_dir"
 printf 'Info: Installing dependencies..\n'
 mkdir -p "$PREFIX/bin"
 printf '\n'
-pkg install wget && pkg install aapt
+DEBIAN_FRONTEND=noninteractive pkg install -y aapt
 printf '\n'
 # wget tetap prioritas, tanpa ubah redirection
 if command -v wget >/dev/null 2>&1; then
