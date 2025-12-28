@@ -113,9 +113,9 @@ Check Termux app permissions and approve them as shown below:
 ---
 ## 📱 Devices Tested
 
-* 220333QAG (Redmi 10C INDIA)
+* 220333QAG Os Android 13 (Redmi 10C INDIA)
   
-* RMX3933 (Realme Note 60)
+* RMX3933 Os Android 14 (Realme Note 60)
 
 ## 💭 Inspired By
 
