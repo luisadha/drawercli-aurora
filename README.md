@@ -113,7 +113,7 @@ Check Termux app permissions and approve them as shown below:
 ---
 ## 📱 Devices Tested
 
-* Fog (Redmi 10C INDIA)
+* 220333QAG (Redmi 10C INDIA)
   
 * RMX3933 (Realme Note 60)
 
