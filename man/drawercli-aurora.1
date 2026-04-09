@@ -1,1 +1,75 @@
-dummy
+.TH DRAWERCLI-AURORA 1 "April 2026" "drawercli-aurora" "User Commands"
+
+.SH NAME
+drawercli-aurora \- launcher drawer generator for Termux Widget
+
+.SH SYNOPSIS
+.B drawercli-aurora
+.RI [ options ]
+
+.SH DESCRIPTION
+.B Drawercli (Aurora version)
+is a lightweight installer script that extracts user-installed applications
+into readable launcher files for use with Termux Widget.
+
+The generated files allow applications to be displayed and launched through
+the Termux Widget interface, effectively acting as a simple application drawer.
+
+This tool is designed specifically for use with:
+.TP
+.B Termux
+A terminal emulator and Linux environment for Android.
+.TP
+.B Termux:Widget
+An extension that allows execution of scripts from the home screen widget.
+
+.SH FEATURES
+.TP
+.B Simple setup
+Automatically generates launcher entries for user applications.
+.TP
+.B Widget integration
+Enables launching apps directly from Termux Widget.
+.TP
+.B Lightweight
+Minimal dependencies and fast execution.
+
+.SH OPTIONS
+Currently, no command-line options are documented.
+Run the command without arguments to execute the default behavior.
+
+.SH USAGE
+Run the command:
+.PP
+.B drawercli-aurora
+.PP
+This will scan installed applications and generate launcher files
+compatible with Termux Widget.
+
+.SH FILES
+.TP
+.I ~/.shortcuts/
+Default directory used by Termux Widget to store executable scripts.
+
+.SH REQUIREMENTS
+.TP
+.B Termux
+Must be installed on the Android device.
+.TP
+.B Termux:Widget
+Required to display and execute generated launcher entries.
+
+.SH AUTHOR
+Written by Luis Adha.
+
+.SH REPORTING BUGS
+Report issues at:
+.br
+https://github.com/luisadha/drawercli-aurora/issues
+
+.SH COPYRIGHT
+This project is licensed under the terms provided in the repository.
+
+.SH SEE ALSO
+.BR termux (1),
+.BR termux-widget (1)
