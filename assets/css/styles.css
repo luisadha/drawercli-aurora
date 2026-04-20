@@ -468,3 +468,37 @@ summary h4 {
   font-weight: 600;
   font-size: 1em;
 }
+/* body {
+      background: #1e1e1e;
+      margin: 0;
+    }
+*/
+#editor {
+      font-family: "Fira Code", monospace;
+      font-size: 14px;
+      padding: 16px;
+      color: #ddd;
+      min-height: 100vh;
+      outline: none;
+      white-space: pre-wrap;
+      caret-color: #00ff9c;
+      position: relative;
+}
+
+    /* Placeholder */
+#editor:empty::before {
+      content: attr(data-placeholder);
+      color: #666;
+      pointer-events: none;
+}
+
+#status {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
+      color: #0f0;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-family: monospace;
+}
