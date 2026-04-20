@@ -59,39 +59,3 @@ img, .block {
   display: block;
   margin: 0.3em;
 }
-
-/* Editor */
-#editor {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #161b22;
-  color: #c9d1d9;
-  border-radius: 10px;
-
-  outline: none;
-  white-space: pre;
-  overflow-x: auto;
-
-  caret-color: transparent; /* sembunyikan cursor asli */
-}
-
-/* Cursor blok ala nvim */
-.cursornvim {
-  display: inline-block;
-  background: #58a6ff;
-  width: 8px;
-  animation: blink 1s steps(1) infinite;
-}
-
-/* Animasi blink */
-@keyframes blink {
-  50% {
-    background: transparent;
-  }
-}
-
-/* Selection */
-::selection {
-  background: #264f78;
-}
