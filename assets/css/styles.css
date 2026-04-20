@@ -482,7 +482,7 @@ body {
   color: #c9d1d9;
 }
 
-/* ===== Editor Container ===== */
+/* ===== Editor Container ===== 
 #editor {
   width: 100%;
   min-height: 140px;
@@ -513,13 +513,13 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ===== Focus State ===== */
+/* ===== Focus State ===== 
 #editor:focus {
   border-color: #58a6ff;
   box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.4);
 }
 
-/* ===== Placeholder ===== */
+/* ===== Placeholder ===== 
 #editor:empty::before {
   content: attr(data-placeholder);
   color: #8b949e;
@@ -527,12 +527,12 @@ body {
   pointer-events: none;
 }
 
-/* Optional: placeholder saat focus */
+/* Optional: placeholder saat focus 
 #editor:focus:empty::before {
   opacity: 0.4;
 }
 
-/* ===== Scrollbar (modern) ===== */
+/* ===== Scrollbar (modern) ===== 
 #editor::-webkit-scrollbar {
   width: 10px;
 }
@@ -550,7 +550,7 @@ body {
   background: #484f58;
 }
 
-/* ===== Highlight.js Fix ===== */
+/* ===== Highlight.js Fix ===== 
 #editor pre,
 #editor code {
   margin: 0;
@@ -558,22 +558,126 @@ body {
   background: transparent !important;
 }
 
-/* paksa font tetap monospace */
+/* paksa font tetap monospace 
 #editor * {
   font-family: inherit !important;
 }
 
-/* ===== Selection ===== */
+/* ===== Selection ===== 
 #editor ::selection {
   background: rgba(88, 166, 255, 0.3);
 }
 
-/* ===== Optional: subtle inset effect ===== */
+/* ===== Optional: subtle inset effect ===== 
 #editor {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-/* ===== Optional: smooth typing feel ===== */
+/* ===== Optional: smooth typing feel ===== 
 #editor {
   will-change: contents;
+}
+
+
+
+/* ===== Page ===== 
+body {
+  background: #0d1117;
+  margin: 0;
+  padding: 20px;
+  font-family: system-ui, sans-serif;
+  color: #c9d1d9;
+}
+*/
+
+/* ===== Wrapper (INI KUNCINYA) ===== */
+.editor-wrapper {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ===== Header (status + button di dalam border) ===== */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+
+  padding: 6px 10px;
+}
+
+/* status text */
+#status {
+  font-family: monospace;
+  font-size: 12px;
+  color: #00ff9c;
+}
+
+/* copy button */
+#copyBtn {
+  background: #21262d;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+#copyBtn:hover {
+  background: #30363d;
+}
+
+/* ===== Editor box ===== */
+#editor {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+
+  background: #0d1117;
+  color: #c9d1d9;
+
+  border: 1px solid #30363d;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+
+  padding: 10px 12px;
+  min-height: 140px;
+
+  outline: none;
+  white-space: pre-wrap;
+
+  caret-color: #58a6ff;
+
+  resize: vertical;
+  overflow: auto;
+
+  box-sizing: border-box;
+}
+
+/* focus glow */
+#editor:focus {
+  box-shadow: 0 0 0 1px rgba(88,166,255,0.4);
+}
+
+/* placeholder */
+#editor:empty::before {
+  content: attr(data-placeholder);
+  color: #8b949e;
+  opacity: 0.7;
+}
+
+/* scrollbar */
+#editor::-webkit-scrollbar {
+  width: 10px;
+}
+
+#editor::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 6px;
 }
