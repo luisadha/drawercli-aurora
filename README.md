@@ -1,4 +1,4 @@
-# drawercli-aurora
+# Drawercli Aurora
 [![workflows](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml/badge.svg)](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml)
 [![deb version](https://img.shields.io/github/v/release/luisadha/drawercli-aurora?label=deb%20version&sort=semver)](https://github.com/luisadha/drawercli-aurora/releases/latest)
 ---
