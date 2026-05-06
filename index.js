@@ -1,5 +1,4 @@
 // Register service worker to control making site work offline
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/drawercli-aurora/sw.js')
