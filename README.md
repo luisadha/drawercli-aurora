@@ -2,6 +2,14 @@
 [![workflows](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml/badge.svg)](https://github.com/luisadha/drawercli-aurora/actions/workflows/build-deb.yml)
 [![deb version](https://img.shields.io/github/v/release/luisadha/drawercli-aurora?label=deb%20version&sort=semver)](https://github.com/luisadha/drawercli-aurora/releases/latest)
 ---
+<!-- ## Star History -->
+<a href="https://www.star-history.com/?repos=luisadha%2Fdrawercli-aurora&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=luisadha/drawercli-aurora&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=luisadha/drawercli-aurora&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=luisadha/drawercli-aurora&type=date&legend=top-left" />
+ </picture>
+</a>
 
 ## Launcher… but actually a drawer
 
