@@ -18,7 +18,21 @@
 # 
 # MIT License
 # (c) 2025 Luis Adha
+version="1.0.4"
+ask_to_adding_sys_apps() {
+local prompt
+printf 'Include system applications in extraction? [y/N]\n'
+read -r prompt < /dev/tty
 
+case "$prompt" in
+        y|Y)
+            INCLUDE_SYSTEM_APPS=true
+            ;;
+        *)
+            INCLUDE_SYSTEM_APPS=false
+            ;;
+    esac
+}
 ask_to_install_nene() {
     target="$HOME/bin/nene-m249.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
@@ -89,13 +103,25 @@ ask_to_install_nene
 printf '\nInfo: Clean up before installs\n'
 "$PREFIX/bin/annihilation"
 printf '\n\n'
+    
+main() {
+local line pkg activity apk_path label
+local -a args
 
+args=(--user 0)
+ask_to_add_system_apps
+
+if [ "$INCLUDE_SYSTEM_APPS" = false ]; then
+args+=(-3)
 printf 'Info: Now extracting your user-installed apps..\n'
+else
+printf 'Info: Now extracting your installed apps..\n'
+fi
 
-pm list packages --user 0 -3 2>&1 </dev/null | while IFS= read -r line; do
+pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line; do
     pkg=${line#package:}
 
-    main=$(pm resolve-activity --user 0 \
+    activity=$(pm resolve-activity --user 0 \
         -a android.intent.action.MAIN \
         -c android.intent.category.LAUNCHER \
         "$pkg" 2>&1 </dev/null | grep "name=" | head -n1 | sed 's/.*name=//')
@@ -106,11 +132,13 @@ pm list packages --user 0 -3 2>&1 </dev/null | while IFS= read -r line; do
         grep "application-label:" |
         sed "s/.*application-label:'//; s/'//")
 
-  if [ -n "$main" ] && [ -n "$label" ]; then
-        printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$main" > "$HOME/.shortcuts/$label"
+  if [ -n "$activity" ] && [ -n "$label" ]; then
+        printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$activity" > "$HOME/.shortcuts/$label"
   fi
 done
 rm "$HOME"/.shortcuts/Termux
         printf 'am start --user 0 -n "com.termux/.app.TermuxActivity\nread wait"' > ${HOME}/.shortcuts/Termux
 printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
+}
+main "$@"
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
