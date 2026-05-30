@@ -109,8 +109,7 @@ local line pkg activity apk_path label
 local -a args
 
 args=(--user 0)
-ask_to_add_system_apps
-
+ask_to_adding_sys_apps
 if [ "$INCLUDE_SYSTEM_APPS" = false ]; then
 args+=(-3)
 printf 'Info: Now extracting your user-installed apps..\n'
