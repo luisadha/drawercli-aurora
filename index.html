@@ -80,7 +80,7 @@ status() {
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
 
-printf 'Info: Checking Termux widget ..\n\n'
+# printf 'Info: Checking Termux widget ..\n\n'
 status 'Info: Checking Termux widget ..'
 
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" = "com.termux.widget" ]; then
@@ -94,7 +94,7 @@ else
     exit 2
 fi
 
-printf 'Info: Processing backup...\n'
+# printf 'Info: Processing backup...\n'
 status 'Info: Processing backup...'
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
@@ -137,7 +137,7 @@ if [ "$INCLUDE_SYSTEM_APPS" = false ]; then
 args+=(-3)
 printf 'Info: Now extracting your user-installed apps..\n'
 else
-printf 'Info: Now extracting your installed apps..\n'
+# printf 'Info: Now extracting your installed apps..\n'
 status 'Info: Now extracting your installed apps..'
 fi
 printf '\n'
