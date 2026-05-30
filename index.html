@@ -19,7 +19,7 @@
 # MIT License
 # (c) 2025 Luis Adha
 version="1.0.5"
-
+termux-wake-lock
 BOOT_MODE=false
 
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
@@ -29,7 +29,7 @@ if [ "$SCRIPT_DIR" = "$HOME/.termux/boot" ]; then
 fi
 toast() {
     [ "$BOOT_MODE" = true ] && command -v termux-toast >/dev/null 2>&1 &&
-        termux-toast "$*"
+        termux-toast "$*" >> "$HOME"/.drawercli-aurora-boot.log
 }
 ask_to_adding_sys_apps() {
 
@@ -169,4 +169,5 @@ printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
 
 }
 main "$@"
+termux-wake-unlock
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
