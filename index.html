@@ -18,71 +18,91 @@
 # 
 # MIT License
 # (c) 2025 Luis Adha
-version="1.0.4"
-ask_to_adding_sys_apps() {
-local prompt
-printf 'Include system applications in extraction? [y/N]\n'
-read -r prompt < /dev/tty
+version="1.0.5"
 
-case "$prompt" in
-        y|Y)
-            INCLUDE_SYSTEM_APPS=true
-            ;;
-        *)
-            INCLUDE_SYSTEM_APPS=false
-            ;;
-    esac
+BOOT_MODE=false
+
+SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
+
+if [ "$SCRIPT_DIR" = "$HOME/.termux/boot" ]; then
+    BOOT_MODE=true
+fi
+toast() {
+    [ "$BOOT_MODE" = true ] && command -v termux-toast >/dev/null 2>&1 &&
+        termux-toast "$*"
 }
-ask_to_install_nene() {
-    target="$HOME/bin/nene-m249.sh"
-    source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
+ask_to_adding_sys_apps() {
 
-    # Jika file sudah ada, jangan tanyakan lagi
-    if [ -f "$target" ]; then
-        printf 'nene is already installed at %s\n' "$target"
+    if [ "$BOOT_MODE" = true ]; then
+        INCLUDE_SYSTEM_APPS=true
+        toast "Boot mode: extracting all apps"
         return 0
     fi
 
-    printf "Install nene to enable future app list updates via sharing feature? [y/N]: \n"
-    read prompt < /dev/tty
+    local prompt
+    printf 'Include system applications in extraction? [y/N]\n'
+    read -r prompt < /dev/tty
 
     case "$prompt" in
-        y|Y)
-            printf 'Installing nene...\n'
-            mkdir -p "$HOME/bin" &&
-            curl -fsSL -o "$target" "$source_url" && printf '\n✓ Installation completed: %s\n' "$target" || printf 'Error while fetch data..'
-            chmod +x "$target" 
-            printf '\nEnabling termux-url-opener function..\n'
-            cp -f "$target" "$HOME/bin/termux-url-opener"
-            sleep 1       
-            ;;
-        *)
-            printf '\nInstallation skipped for a reason.\n'
-            printf '\n'
-            ;;
+        y|Y) INCLUDE_SYSTEM_APPS=true ;;
+        *)   INCLUDE_SYSTEM_APPS=false ;;
     esac
 }
 
+ask_to_install_nene() {
+
+    target="$HOME/bin/nene-m249.sh"
+    source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
+
+    [ -f "$target" ] && return 0
+
+    if [ "$BOOT_MODE" = true ]; then
+        toast "Boot mode: skipping nene installation"
+        return 0
+    fi
+
+    printf 'Install nene to enable future app list updates via sharing feature? [y/N]: \n'
+    read -r prompt < /dev/tty
+
+    case "$prompt" in
+        y|Y)
+            mkdir -p "$HOME/bin" &&
+            curl -fsSL -o "$target" "$source_url" &&
+            chmod +x "$target" &&
+            cp -f "$target" "$HOME/bin/termux-url-opener"
+            ;;
+    esac
+}
+status() {
+    printf '%s\n' "$*"
+    toast "$*"
+}
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
 
 printf 'Info: Checking Termux widget ..\n\n'
+status 'Info: Checking Termux widget ..'
 
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" = "com.termux.widget" ]; then
     mkdir -p "$HOME/.shortcuts/"
     printf '✓ Requirement satisfied\n\n'
+    toast '✓ Requirement satisfied'
 else
     printf '× Addon Termux:Widget not installed on your phone!\n'
+    toast '× Addon Termux:Widget not installed on your phone!'
+    
     exit 2
 fi
 
 printf 'Info: Processing backup...\n'
+status 'Info: Processing backup...'
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
 find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
 printf '✓ Backup done %s\n\n' "$backup_dir"
-
+ toast '✓ Backup done' "$backup_dir"
 printf 'Info: Installing dependencies..\n'
+status 'Info: Installing dependencies..'
 mkdir -p "$PREFIX/bin"
 printf '\n'
 DEBIAN_FRONTEND=noninteractive pkg install -y aapt
@@ -94,15 +114,17 @@ elif command -v curl >/dev/null 2>&1; then
     curl -fsSL -o "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
 else
     printf 'Error: neither wget nor curl found!\n' >&2
+     toast 'Error: neither wget nor curl found!'
     exit 1
 fi
 
 chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
+ toast '✓ Installed annihilation' "$PREFIX/bin"
 ask_to_install_nene
-printf '\nInfo: Clean up before installs\n'
-"$PREFIX/bin/annihilation"
-printf '\n\n'
+printf '\nInfo: Clean up before installs\n' "$PREFIX/bin/annihilation"
+ toast 'Info: Clean up before installs' "$PREFIX/bin/annihilation"
+ printf '\n\n'
     
 main() {
 local line pkg activity apk_path label
@@ -116,6 +138,7 @@ args+=(-3)
 printf 'Info: Now extracting your user-installed apps..\n'
 else
 printf 'Info: Now extracting your installed apps..\n'
+status 'Info: Now extracting your installed apps..'
 fi
 printf '\n'
 pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line; do
@@ -142,6 +165,8 @@ printf '%s\n%s\n' \
 'read _' \
 > "$HOME/.shortcuts/Termux"  
 printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
+ toast '✓ All process completed, list apps saved at ~/.shortcuts' "$HOME"
+
 }
 main "$@"
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
