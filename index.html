@@ -18,21 +18,80 @@
 # 
 # MIT License
 # (c) 2025 Luis Adha
-version="1.0.5"
+version="1.0.7"
 termux-wake-lock
 BOOT_MODE=false
-
+checklist="✔"
+unchecklist="✖"
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
 
 if [ "$SCRIPT_DIR" = "$HOME/.termux/boot" ]; then
     BOOT_MODE=true
 fi
+
+# â”€â”€ Cache config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+CACHE_DIR="$HOME/.shortcuts/.cache"
+CACHE_FILE="$CACHE_DIR/shortcuts.cache"
+CACHE_TTL_DAYS=7
+CACHE_TTL_SECONDS=$((CACHE_TTL_DAYS * 86400))
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 toast() {
     [ "$BOOT_MODE" = true ] && command -v termux-toast >/dev/null 2>&1 &&
         termux-toast "$*" >> "$HOME"/.drawercli-aurora-boot.log
 }
-ask_to_adding_sys_apps() {
 
+# â”€â”€ Cache helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+# Cek apakah cache masih valid (ada & belum lebih dari 7 hari)
+cache_is_valid() {
+    [ -f "$CACHE_FILE" ] || return 1
+
+    local now cache_mtime age
+    now=$(date +%s)
+
+    # Termux (Linux): stat -c %Y
+    cache_mtime=$(stat -c %Y "$CACHE_FILE" 2>/dev/null) || return 1
+
+    age=$(( now - cache_mtime ))
+    [ "$age" -lt "$CACHE_TTL_SECONDS" ]
+}
+
+# Simpan semua shortcut saat ini ke cache (format: "label|am_start_command")
+cache_save() {
+    mkdir -p "$CACHE_DIR"
+    : > "$CACHE_FILE"   # truncate / buat baru
+
+    find "$HOME/.shortcuts" -maxdepth 1 -type f | while IFS= read -r f; do
+        local label content
+        label=$(basename "$f")
+        content=$(cat "$f")
+        # Pisahkan label dan isi dengan delimiter |||
+        printf '%s|||%s\n' "$label" "$content" >> "$CACHE_FILE"
+    done
+
+    status "âœ“ Cache saved ($CACHE_FILE)"
+}
+
+# Restore shortcut dari cache ke ~/.shortcuts
+cache_restore() {
+    status 'Info: Restoring shortcuts from cache (7-day cache hit)..'
+    toast  'Info: Restoring shortcuts from cache..'
+
+    mkdir -p "$HOME/.shortcuts"
+
+    while IFS='|||' read -r label content; do
+        [ -z "$label" ] && continue
+        printf '%s\n' "$content" > "$HOME/.shortcuts/$label"
+        chmod +x "$HOME/.shortcuts/$label" 2>/dev/null
+    done < "$CACHE_FILE"
+
+    status "âœ“ Shortcuts restored from cache â€” skipped full extraction"
+    toast  "âœ“ Restored from cache"
+}
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+ask_to_adding_sys_apps() {
     if [ "$BOOT_MODE" = true ]; then
         INCLUDE_SYSTEM_APPS=true
         toast "Boot mode: extracting all apps"
@@ -50,7 +109,6 @@ ask_to_adding_sys_apps() {
 }
 
 ask_to_install_nene() {
-
     target="$HOME/bin/nene-m249.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
 
@@ -73,6 +131,7 @@ ask_to_install_nene() {
             ;;
     esac
 }
+
 status() {
     printf '%s\n' "$*"
     toast "$*"
@@ -80,67 +139,87 @@ status() {
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
 
-# printf 'Info: Checking Termux widget ..\n\n'
+# â”€â”€ Termux widget check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 status 'Info: Checking Termux widget ..'
 
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" = "com.termux.widget" ]; then
     mkdir -p "$HOME/.shortcuts/"
-    printf '✓ Requirement satisfied\n\n'
-    toast '✓ Requirement satisfied'
+    printf '%s %s\n' "$checklist" "Requirement satisfied"
+    toast 'âœ“ Requirement satisfied'
 else
-    printf '× Addon Termux:Widget not installed on your phone!\n'
-    toast '× Addon Termux:Widget not installed on your phone!'
-    
+    printf '%s\n' "Addon Termux:Widget not installed on your phone!" "$unchecklist"
+    toast 'Ã— Addon Termux:Widget not installed on your phone!'
     exit 2
 fi
 
-# printf 'Info: Processing backup...\n'
+# â”€â”€ Cache check â€” jika valid, restore & selesai â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+if cache_is_valid; then
+    printf '\n'
+    cache_restore
+
+    # Pastikan entry Termux selalu ada & fresh
+    rm -f "$HOME/.shortcuts/Termux"
+    printf '%s\n%s\n' \
+        'am start --user 0 -n com.termux/.app.TermuxActivity' \
+        'read _' \
+        > "$HOME/.shortcuts/Termux"
+
+    termux-wake-unlock
+    exit 0
+fi
+
+# â”€â”€ Cache miss / expired â€” jalankan proses penuh â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+printf 'Info: Cache expired or not found â€” running full extraction..\n\n'
+toast 'Info: Cache miss â€” full extraction..'
+
+# Backup shortcut lama
 status 'Info: Processing backup...'
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
 find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
-printf '✓ Backup done %s\n\n' "$backup_dir"
- toast '✓ Backup done'
-#printf 'Info: Installing dependencies..\n'
+printf 'âœ“ Backup done %s\n\n' "$backup_dir"
+toast 'âœ“ Backup done'
+
+# Install dependencies
 status 'Info: Installing dependencies..'
 mkdir -p "$PREFIX/bin"
 printf '\n'
 DEBIAN_FRONTEND=noninteractive pkg install -y aapt
 printf '\n'
-# wget tetap prioritas, tanpa ubah redirection
+
 if command -v wget >/dev/null 2>&1; then
     wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
 elif command -v curl >/dev/null 2>&1; then
     curl -fsSL -o "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
 else
     printf 'Error: neither wget nor curl found!\n' >&2
-     toast 'Error: neither wget nor curl found!'
+    toast 'Error: neither wget nor curl found!'
     exit 1
 fi
 
 chmod +x "$PREFIX/bin/annihilation"
-printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
- toast '✓ Installed annihilation'
+printf 'âœ“ Installed %s/annihilation\n\n' "$PREFIX/bin"
+toast 'âœ“ Installed annihilation'
+
 ask_to_install_nene
-printf '\nInfo: Clean up before installs\n' "$PREFIX/bin/annihilation"
- toast 'Info: Clean up before installs'
- printf '\n\n'
-    
-#main() {
-#local line pkg activity apk_path label
-#local -a args
+
+printf '\nInfo: Clean up before installs\n'
+toast 'Info: Clean up before installs'
+printf '\n\n'
 
 args=(--user 0)
 ask_to_adding_sys_apps
 printf '\n'
+
 if [ "$INCLUDE_SYSTEM_APPS" = false ]; then
-args+=(-3)
-printf 'Info: Now extracting your user-installed apps..\n'
+    args+=(-3)
+    printf 'Info: Now extracting your user-installed apps..\n'
 else
-# printf 'Info: Now extracting your installed apps..\n'
-status 'Info: Now extracting your installed apps..'
+    status 'Info: Now extracting your installed apps..'
 fi
 printf '\n'
+
+# Extract shortcut dari semua package
 pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line; do
     pkg=${line#package:}
 
@@ -149,25 +228,27 @@ pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line
         -c android.intent.category.LAUNCHER \
         "$pkg" 2>&1 </dev/null | grep "name=" | head -n1 | sed 's/.*name=//')
 
-    apk_path=$(pm path "$pkg" --user 0 2>&1 </dev/null | sed 's/package://; q' )
+    apk_path=$(pm path "$pkg" --user 0 2>&1 </dev/null | sed 's/package://; q')
 
     label=$(aapt dump badging "$apk_path" 2>/dev/null |
         grep "application-label:" |
         sed "s/.*application-label:'//; s/'//")
 
-  if [ -n "$activity" ] && [ -n "$label" ]; then
+    if [ -n "$activity" ] && [ -n "$label" ]; then
         printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$activity" > "$HOME/.shortcuts/$label"
-  fi
+    fi
 done
-rm "$HOME"/.shortcuts/Termux
-printf '%s\n%s\n' \
-'am start --user 0 -n com.termux/.app.TermuxActivity' \
-'read _' \
-> "$HOME/.shortcuts/Termux"  
-printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
- toast '✓ All process completed, list apps saved at ~/.shortcuts'
 
-# }
-# main "$@"
+# Pastikan entry Termux selalu fresh
+rm -f "$HOME/.shortcuts/Termux"
+printf '%s\n%s\n' \
+    'am start --user 0 -n com.termux/.app.TermuxActivity' \
+    > "$HOME/.shortcuts/Termux"
+                                                                printf 'âœ“ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
+toast 'âœ“ All process completed, list apps saved at ~/.shortcuts'
+
+# Simpan hasil ke cache untuk 7 hari ke depan
+cache_save
+
 termux-wake-unlock
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
