@@ -145,4 +145,4 @@ Please check out these previous works that inspired the creation of Drawercli Au
 ## 📜 License
 
 Copyright © 2024–Present  
-[**Luis Adha**](https://github.com/luisadha) — under the **MIT License**
+[**Luis Adha**](https://github.com/luisadha) — under the **BUSL LICENSE**
