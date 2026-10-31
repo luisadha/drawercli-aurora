@@ -168,6 +168,14 @@ ask_to_install_nene() {
         curl -fsSL -o "$target" "$source_url" &&
         chmod +x "$target" &&
         cp -f "$target" "$HOME/bin/termux-url-opener"
+        mkdir -p ~/bin
+if grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc; then
+    echo "nene installation successful (PATH already configured, nothing changed)."
+else
+    echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+    echo "nene installation successful! ~/bin has been added to your PATH."
+fi
+source ~/.bashrc
     fi
 }
 
