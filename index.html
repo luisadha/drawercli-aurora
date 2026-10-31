@@ -164,7 +164,7 @@ ask_to_adding_sys_apps() {
 
 ask_to_install_nene() {
 
-    target="$HOME/bin/nene-hook.sh"
+    target="$HOME/bin/nene-dl.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
     nene_auto=false
 
@@ -261,14 +261,13 @@ fi
 chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
 toast '✓ Installed annihilation'
-
+printf '\n'
 ensure_path
+printf '\n'
 ask_to_install_nene
-
 printf '\nInfo: Clean up before installs\n'
 toast 'Info: Clean up before installs'
 printf '\n\n'
-
 ask_to_adding_sys_apps
 printf '\n'
 
