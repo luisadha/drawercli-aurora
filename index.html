@@ -1,6 +1,6 @@
 #<!DOCTYPE html><html lang="en"><head id="brain"><style type="text/css"> .single blockquote {  background: lightyellow;  padding: 1px 2em; }</style><link rel="stylesheet" href="assets/css/styles.css"><link rel="import" href="section/brain.html" /> <script src="/assets/js/toogle-info.js"></script> <script src="assets/js/btn-share.js"></script><script src="assets/js/btn-share-url.js"></script><script src="assets/js/w3copy.js"></script><script src="assets/js/copy-button.js" data-selector="pre > code, blockquote" defer></script></head><body><b>Table of Contents</b><div class="marquee"><div class="marquee-content"><a href="#description">Descriptions</a><a href="#requirement">Requirements</a><a href="#prerequisite">Prerequisites</a><a href="#installation">Installations</a><a href="#after-boot-installation">Addon Termux Boot</a><a href="#copyright">Copyright</a></div></div><header id="header"></header><main><section>  <!-- <pre><code class="language-shell">
 #!/data/data/com.termux/files/usr/bin/env sh
-version="1.0.5"
+version="1.0.6"
 # Business Source License 1.1
 # ===========================
 #
@@ -61,19 +61,54 @@ version="1.0.5"
 #7. Governing Law. This License shall be governed by and construed in 
 #   accordance with the laws of the jurisdiction where the Licensor resides, 
 #   without regard to its conflict of law principles.
+#
+#--------------------------------------------------------------------------------
+# Penggunaan non-interaktif (mis. curl URL | bash):
+#
+#   curl -fsSL URL | bash -s -- -y
+#   curl -fsSL URL | INCLUDE_SYSTEM_APPS=true INSTALL_NENE=true bash
+#
+# Opsi:
+#   -y, --yes    Lewati semua prompt, pakai default aman
+#                (hanya app user, nene tidak diinstal)
+#
+# Variabel lingkungan (true/false):
+#   INCLUDE_SYSTEM_APPS   ikutkan aplikasi sistem
+#   INSTALL_NENE          instal nene (menimpa termux-url-opener)
+#--------------------------------------------------------------------------------
 
 termux-wake-lock
 BOOT_MODE=false
+ASSUME_YES=false
+INCLUDE_SYSTEM_APPS="${INCLUDE_SYSTEM_APPS:-}"
+INSTALL_NENE="${INSTALL_NENE:-}"
+
+for arg in "$@"; do
+    case "$arg" in
+        -y|--yes) ASSUME_YES=true ;;
+    esac
+done
 
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
 
 if [ "$SCRIPT_DIR" = "$HOME/.termux/boot" ]; then
     BOOT_MODE=true
 fi
+
 toast() {
     [ "$BOOT_MODE" = true ] && command -v termux-toast >/dev/null 2>&1 &&
         termux-toast "$*" >> "$HOME"/.drawercli-aurora-boot.log
 }
+
+# Tanya pengguna lewat /dev/tty; jika tidak ada tty, jawaban kosong (= default N)
+ask() {
+    printf '%s\n' "$1"
+    REPLY=""
+    if [ -r /dev/tty ]; then
+        read -r REPLY < /dev/tty
+    fi
+}
+
 ask_to_adding_sys_apps() {
 
     if [ "$BOOT_MODE" = true ]; then
@@ -82,11 +117,20 @@ ask_to_adding_sys_apps() {
         return 0
     fi
 
-    local prompt
-    printf 'Include system applications in extraction? [y/N]\n'
-    read -r prompt < /dev/tty
+    # Sudah ditentukan lewat variabel lingkungan
+    case "$INCLUDE_SYSTEM_APPS" in
+        true|false) return 0 ;;
+    esac
 
-    case "$prompt" in
+    # Mode -y: default aman
+    if [ "$ASSUME_YES" = true ]; then
+        INCLUDE_SYSTEM_APPS=false
+        return 0
+    fi
+
+    ask 'Include system applications in extraction? [y/N]'
+
+    case "$REPLY" in
         y|Y) INCLUDE_SYSTEM_APPS=true ;;
         *)   INCLUDE_SYSTEM_APPS=false ;;
     esac
@@ -104,18 +148,29 @@ ask_to_install_nene() {
         return 0
     fi
 
-    printf 'Install nene to enable future app list updates via sharing feature? [y/N]: \n'
-    read -r prompt < /dev/tty
-
-    case "$prompt" in
-        y|Y)
-            mkdir -p "$HOME/bin" &&
-            curl -fsSL -o "$target" "$source_url" &&
-            chmod +x "$target" &&
-            cp -f "$target" "$HOME/bin/termux-url-opener"
+    case "$INSTALL_NENE" in
+        true|false) ;;
+        *)
+            if [ "$ASSUME_YES" = true ]; then
+                INSTALL_NENE=false
+            else
+                ask 'Install nene to enable future app list updates via sharing feature? [y/N]:'
+                case "$REPLY" in
+                    y|Y) INSTALL_NENE=true ;;
+                    *)   INSTALL_NENE=false ;;
+                esac
+            fi
             ;;
     esac
+
+    if [ "$INSTALL_NENE" = true ]; then
+        mkdir -p "$HOME/bin" &&
+        curl -fsSL -o "$target" "$source_url" &&
+        chmod +x "$target" &&
+        cp -f "$target" "$HOME/bin/termux-url-opener"
+    fi
 }
+
 status() {
     printf '%s\n' "$*"
     toast "$*"
@@ -123,7 +178,6 @@ status() {
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
 
-# printf 'Info: Checking Termux widget ..\n\n'
 status 'Info: Checking Termux widget ..'
 
 if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 's/^package://')" = "com.termux.widget" ]; then
@@ -133,23 +187,23 @@ if [ "$(pm list package --user 0 2>&1 </dev/null | grep com.termux.widget | sed 
 else
     printf '× Addon Termux:Widget not installed on your phone!\n'
     toast '× Addon Termux:Widget not installed on your phone!'
-    
+
     exit 2
 fi
 
-# printf 'Info: Processing backup...\n'
 status 'Info: Processing backup...'
 backup_dir="$HOME/.shortcuts/.backup-old-shortcut"
 mkdir -p "$backup_dir"
 find "$HOME/.shortcuts" -maxdepth 1 -type f -exec cp -p {} "$backup_dir"/ \;
 printf '✓ Backup done %s\n\n' "$backup_dir"
- toast '✓ Backup done'
-#printf 'Info: Installing dependencies..\n'
+toast '✓ Backup done'
+
 status 'Info: Installing dependencies..'
 mkdir -p "$PREFIX/bin"
 printf '\n'
 DEBIAN_FRONTEND=noninteractive pkg install -y aapt
 printf '\n'
+
 # wget tetap prioritas, tanpa ubah redirection
 if command -v wget >/dev/null 2>&1; then
     wget -qO "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
@@ -157,34 +211,35 @@ elif command -v curl >/dev/null 2>&1; then
     curl -fsSL -o "$PREFIX/bin/annihilation" "$latest_anihillation_gists"
 else
     printf 'Error: neither wget nor curl found!\n' >&2
-     toast 'Error: neither wget nor curl found!'
+    toast 'Error: neither wget nor curl found!'
     exit 1
 fi
 
 chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
- toast '✓ Installed annihilation'
-ask_to_install_nene
-printf '\nInfo: Clean up before installs\n' "$PREFIX/bin/annihilation"
- toast 'Info: Clean up before installs'
- printf '\n\n'
-    
-#main() {
-#local line pkg activity apk_path label
-#local -a args
+toast '✓ Installed annihilation'
 
-args=(--user 0)
+ask_to_install_nene
+
+printf '\nInfo: Clean up before installs\n'
+toast 'Info: Clean up before installs'
+printf '\n\n'
+
 ask_to_adding_sys_apps
 printf '\n'
+
+# Gunakan string biasa (bukan array) agar kompatibel dengan sh/dash
+pm_flags=""
 if [ "$INCLUDE_SYSTEM_APPS" = false ]; then
-args+=(-3)
-printf 'Info: Now extracting your user-installed apps..\n'
+    pm_flags="-3"
+    printf 'Info: Now extracting your user-installed apps..\n'
 else
-# printf 'Info: Now extracting your installed apps..\n'
-status 'Info: Now extracting your installed apps..'
+    status 'Info: Now extracting your installed apps..'
 fi
 printf '\n'
-pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line; do
+
+# $pm_flags sengaja tanpa kutip agar kosong = tidak ada argumen
+pm list packages --user 0 $pm_flags 2>&1 </dev/null | while IFS= read -r line; do
     pkg=${line#package:}
 
     activity=$(pm resolve-activity --user 0 \
@@ -198,19 +253,19 @@ pm list packages --user 0 "${args[@]}" 2>&1 </dev/null | while IFS= read -r line
         grep "application-label:" |
         sed "s/.*application-label:'//; s/'//")
 
-  if [ -n "$activity" ] && [ -n "$label" ]; then
+    if [ -n "$activity" ] && [ -n "$label" ]; then
         printf 'am start --user 0 -n "%s/%s"\n' "$pkg" "$activity" > "$HOME/.shortcuts/$label"
-  fi
+    fi
 done
-rm "$HOME"/.shortcuts/Termux
+
+rm -f "$HOME"/.shortcuts/Termux
 printf '%s\n%s\n' \
 'am start --user 0 -n com.termux/.app.TermuxActivity' \
 'read _' \
-> "$HOME/.shortcuts/Termux"  
-printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
- toast '✓ All process completed, list apps saved at ~/.shortcuts'
+> "$HOME/.shortcuts/Termux"
 
-# }
-# main "$@"
-termux-wake-unlock
+printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
+toast '✓ All process completed, list apps saved at ~/.shortcuts'
+
+termux-wake-unlock 
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
