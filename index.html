@@ -105,6 +105,19 @@ status() {
     toast "$*"
 }
 
+# Pastikan ~/bin ada dan PATH-nya tertulis di ~/.bashrc (tanpa duplikat)
+ensure_path() {
+    mkdir -p "$HOME/bin"
+    touch "$HOME/.bashrc"
+    if grep -qxF 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
+        status 'Info: PATH ~/bin already in ~/.bashrc, nothing changed'
+    else
+        echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+        status '✓ Added ~/bin to PATH in ~/.bashrc (active on next terminal session)'
+    fi
+    export PATH="$HOME/bin:$PATH"
+}
+
 # Tanya pengguna lewat /dev/tty; jika tidak ada tty, jawaban kosong (= default N)
 ask() {
     printf '%s\n' "$1"
@@ -151,7 +164,7 @@ ask_to_adding_sys_apps() {
 
 ask_to_install_nene() {
 
-    target="$HOME/bin/nene-m249.sh"
+    target="$HOME/bin/nene-hook.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
     nene_auto=false
 
@@ -198,12 +211,6 @@ ask_to_install_nene() {
        curl -fsSL -o "$target" "$source_url" &&
        chmod +x "$target" &&
        cp -f "$target" "$HOME/bin/termux-url-opener"; then
-
-        touch "$HOME/.bashrc"
-        if ! grep -qxF 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
-            echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
-        fi
-        export PATH="$HOME/bin:$PATH"
 
         status '✓ nene installation successful!'
     else
@@ -255,6 +262,7 @@ chmod +x "$PREFIX/bin/annihilation"
 printf '✓ Installed %s/annihilation\n\n' "$PREFIX/bin"
 toast '✓ Installed annihilation'
 
+ensure_path
 ask_to_install_nene
 
 printf '\nInfo: Clean up before installs\n'
@@ -304,4 +312,5 @@ printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
 toast '✓ All process completed, list apps saved at ~/.shortcuts'
 
 termux-wake-unlock
+
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
