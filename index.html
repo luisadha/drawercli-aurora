@@ -100,6 +100,11 @@ toast() {
         termux-toast "$*" >> "$HOME"/.drawercli-aurora-boot.log
 }
 
+status() {
+    printf '%s\n' "$*"
+    toast "$*"
+}
+
 # Tanya pengguna lewat /dev/tty; jika tidak ada tty, jawaban kosong (= default N)
 ask() {
     printf '%s\n' "$1"
@@ -119,12 +124,20 @@ ask_to_adding_sys_apps() {
 
     # Sudah ditentukan lewat variabel lingkungan
     case "$INCLUDE_SYSTEM_APPS" in
-        true|false) return 0 ;;
+        true)
+            status '(auto) extracting system apps..'
+            return 0
+            ;;
+        false)
+            status '(auto) skipping system apps (user apps only)'
+            return 0
+            ;;
     esac
 
     # Mode -y: default aman
     if [ "$ASSUME_YES" = true ]; then
         INCLUDE_SYSTEM_APPS=false
+        status '(auto) skipping system apps (user apps only)'
         return 0
     fi
 
@@ -140,8 +153,12 @@ ask_to_install_nene() {
 
     target="$HOME/bin/nene-m249.sh"
     source_url="https://raw.githubusercontent.com/luisadha/nene/refs/heads/main/bin/nene"
+    nene_auto=false
 
-    [ -f "$target" ] && return 0
+    if [ -f "$target" ]; then
+        status 'Info: nene already installed, skipping'
+        return 0
+    fi
 
     if [ "$BOOT_MODE" = true ]; then
         toast "Boot mode: skipping nene installation"
@@ -149,10 +166,13 @@ ask_to_install_nene() {
     fi
 
     case "$INSTALL_NENE" in
-        true|false) ;;
+        true|false)
+            nene_auto=true
+            ;;
         *)
             if [ "$ASSUME_YES" = true ]; then
                 INSTALL_NENE=false
+                nene_auto=true
             else
                 ask 'Install nene to enable future app list updates via sharing feature? [y/N]:'
                 case "$REPLY" in
@@ -163,25 +183,33 @@ ask_to_install_nene() {
             ;;
     esac
 
-    if [ "$INSTALL_NENE" = true ]; then
-        mkdir -p "$HOME/bin" &&
-        curl -fsSL -o "$target" "$source_url" &&
-        chmod +x "$target" &&
-        cp -f "$target" "$HOME/bin/termux-url-opener"
-        mkdir -p ~/bin
-if grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc; then
-    echo "nene installation successful (PATH already configured, nothing changed)."
-else
-    echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
-    echo "nene installation successful! ~/bin has been added to your PATH."
-fi
-source ~/.bashrc
+    if [ "$INSTALL_NENE" != true ]; then
+        [ "$nene_auto" = true ] && status '(auto) skipping nene installation'
+        return 0
     fi
-}
 
-status() {
-    printf '%s\n' "$*"
-    toast "$*"
+    if [ "$nene_auto" = true ]; then
+        status '(auto) installing nene..'
+    else
+        status 'Info: installing nene..'
+    fi
+
+    if mkdir -p "$HOME/bin" &&
+       curl -fsSL -o "$target" "$source_url" &&
+       chmod +x "$target" &&
+       cp -f "$target" "$HOME/bin/termux-url-opener"; then
+
+        touch "$HOME/.bashrc"
+        if ! grep -qxF 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
+            echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+        fi
+        export PATH="$HOME/bin:$PATH"
+
+        status '✓ nene installation successful!'
+    else
+        rm -f "$target"
+        status '× nene installation failed! Check your internet connection.'
+    fi
 }
 
 latest_anihillation_gists="https://gist.githubusercontent.com/luisadha/702967e776e0efb8385ab31adda78715/raw/annihilation.sh"
@@ -275,5 +303,5 @@ printf '%s\n%s\n' \
 printf '✓ All process completed, list apps saved at %s/.shortcuts\n' "$HOME"
 toast '✓ All process completed, list apps saved at ~/.shortcuts'
 
-termux-wake-unlock 
+termux-wake-unlock
 # </code></pre> -->     </section>    </main>    <div id="postscript"></div>    <footer id="footer"></footer>      <script async src="assets/js/main.js"></script> <script src="https://cdn.jsdelivr.net/npm/@xiee/utils/js/copy-button.min.js" data-selector="pre > code, blockquote" defer></script> <hr></body></html>
